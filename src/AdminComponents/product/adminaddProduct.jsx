@@ -24,7 +24,7 @@ function AdminaddProduct() {
   const [productType, setProductType] = useState("Domestic");
   const [uploadProgress, setUploadProgress] = useState({});
   const [thumbnailUploadProgress, setThumbnailUploadProgress] = useState(0);
-  const [productSizes, setProductSizes] = useState([{ size: '', sizetype: '', quantity: '',price: '',discountPercentage: 0,FinalPrice: '' }]);
+  const [productSizes, setProductSizes] = useState([{ size: 'null', sizetype: 'null', quantity: '',price: '',discountPercentage: 0,FinalPrice: '' }]);
   const [productNuturitions, setProductNuturitions] = useState([{ nutrition: '', value: '' }]);
   console.log(productNuturitions);
   const [deliverables, setDeliverables] = useState([]);
