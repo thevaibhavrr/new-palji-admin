@@ -52,13 +52,25 @@ function AdminaddProduct() {
     setProductSizes(updatedSizes);
   };
 
+  // const handleNutritionChange = (index, event) => {
+  //   const { name, value } = event.target;
+  //   const updatedNutritions = [...productNuturitions];
+  //   updatedNutritions[index][name] = parseFloat(value) || value;
+  //   setProductNuturitions(updatedNutritions);
+  // };
   const handleNutritionChange = (index, event) => {
     const { name, value } = event.target;
     const updatedNutritions = [...productNuturitions];
-    updatedNutritions[index][name] = parseFloat(value) || value;
+    
+    // If you want to keep the original text value instead of parsing it
+    updatedNutritions[index][name] = value; // Keep it as a string
+    
+    // If you still want to parse it as float when it is a number
+    // updatedNutritions[index][name] = isNaN(value) ? value : parseFloat(value);
+  
     setProductNuturitions(updatedNutritions);
   };
-
+  
 
   const calculateFinalPrice = (price, discountPercentage) => {
     return price - (price * (discountPercentage / 100));
