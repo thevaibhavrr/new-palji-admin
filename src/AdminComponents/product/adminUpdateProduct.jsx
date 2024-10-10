@@ -142,7 +142,7 @@ function UpdateProduct() {
   };
 
   const handleAddMoreSizes = () => {
-    setSizes([...sizes, { size: "", sizetype: "", quantity: "",price: '',discountPercentage: 0,FinalPrice: ''  }]);
+    setSizes([...sizes, { size: "null", sizetype: "null", quantity: "",price: '',discountPercentage: 0,FinalPrice: ''  }]);
   };
 
   const handleDeleteSize = async (sizeId) => {
