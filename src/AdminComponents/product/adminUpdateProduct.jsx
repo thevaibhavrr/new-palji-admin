@@ -137,9 +137,12 @@ function UpdateProduct() {
     updatedSizes[index][field] = e.target.value;
     setSizes(updatedSizes);
   };
+  const calculateFinalPrice = (price, discountPercentage) => {
+    return price - (price * (discountPercentage / 100));
+  };
 
   const handleAddMoreSizes = () => {
-    setSizes([...sizes, { size: "", sizetype: "", quantity: "" }]);
+    setSizes([...sizes, { size: "", sizetype: "", quantity: "",price: '',discountPercentage: 0,FinalPrice: ''  }]);
   };
 
   const handleDeleteSize = async (sizeId) => {
@@ -196,6 +199,16 @@ function UpdateProduct() {
           });
         }
       }
+      for (const size of sizes) {
+        if (size._id) {
+          await makeApi(`/api/update-productsize/${size._id}`, "PUT", size);
+        } else {
+          await makeApi(`/api/add-productsize`, "POST", {
+            productId,
+            ...size,
+          });
+        }
+      }
 
       for (const include of includes) {
         if (include._id) {
@@ -220,296 +233,301 @@ function UpdateProduct() {
 
   return (
     <>
-      {loading ? (
-        <Loader />
-      ) : (
-        <div className="main_update_product_page">
-          <div>
-            <Link to={"/admin/allproducts"}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="26"
-                height="36"
-                fill="currentColor"
-                className="bi bi-arrow-left back_arrow_icon"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"
+    {loading ? (
+      <Loader />
+    ) : (
+      <div className="main_update_product_page">
+        <div>
+          <Link to={"/admin/allproducts"}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="26"
+              height="36"
+              fill="currentColor"
+              className="bi bi-arrow-left back_arrow_icon"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fillRule="evenodd"
+                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"
+              />
+            </svg>
+          </Link>
+        </div>
+  
+        <div className="update-product-container">
+          <h2>Update Product</h2>
+          <form onSubmit={handleSubmit}>
+            {/* General Information Section */}
+            <div className="form-section">
+              <h3>General Information</h3>
+              <div className="form-group">
+                <label>Name:</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
                 />
-              </svg>
-            </Link>
-          </div>
-
-          <div className="update-product-container">
-            <h2>Update Product</h2>
-            <form onSubmit={handleSubmit}>
-              {/* General Information Section */}
-              <div className="form-section">
-                <h3>General Information</h3>
-                <div className="form-group">
-                  <label>Name:</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Description:</label>
-                  <textarea
-                    name="description"
-                    value={formData.description}
-                    onChange={handleChange}
-                  />
-                </div>
               </div>
-              {/* Stock & Quantity Section */}
-              <div className="form-section">
-                <h3>Stock & Quantity</h3>
-
-                {/* <div className="form-group">
-                  <label>Category:</label>
-                  <input
-                    type="text"
-                    name="category"
-                    value={formData.category}
-                    onChange={handleChange}
-                    disabled
-                  />
-                </div> */}
-                <div className="form-group">
-                  <label>Category:</label>
-                  <select
-                    name="category"
-                    value={formData.category}
-                    onChange={handleChange}
-                  >
-                    {categories.map((category) => (
-                      <option key={category._id} value={category._id}>
-                        {category.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
+              <div className="form-group">
+                <label>Description:</label>
+                <textarea
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                />
               </div>
-
-              {/* Sizes Section */}
-              <div className="form-section">
-                <h3>Sizes</h3>
-                <div className="size-section">
-                  {sizes.map((size, index) => (
-                    <div key={index} className="size-row">
-                      <input
-                        type="text"
-                        name={`size_${index}`}
-                        value={size.size}
-                        placeholder="Size"
-                        onChange={(e) => handleSizeChange(e, index, "size")}
-                      />
-                      <input
-                        type="text"
-                        name={`sizetype_${index}`}
-                        value={size.sizetype}
-                        placeholder="Size Type"
-                        onChange={(e) => handleSizeChange(e, index, "sizetype")}
-                      />
-                      <input
-                        type="number"
-                        name={`quantity_${index}`}
-                        value={size.quantity}
-                        placeholder="Quantity"
-                        onChange={(e) => handleSizeChange(e, index, "quantity")}
-                      />
-                      {size._id && (
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setShowConfirm({ show: true, sizeId: size._id })
-                          }
-                        >
-                          Delete
-                        </button>
-                      )}
-                    </div>
+            </div>
+  
+            {/* Stock & Quantity Section */}
+            <div className="form-section">
+              <h3>Stock & Quantity</h3>
+              <div className="form-group">
+                <label>Category:</label>
+                <select
+                  name="category"
+                  value={formData.category}
+                  onChange={handleChange}
+                >
+                  {categories.map((category) => (
+                    <option key={category._id} value={category._id}>
+                      {category.name}
+                    </option>
                   ))}
-                  <button
-                    type="button"
-                    className="add-more-sizes-button"
-                    onClick={handleAddMoreSizes}
-                  >
-                    Add More Sizes
-                  </button>
-                </div>
+                </select>
               </div>
-              {/* nutritions */}
-              <div className="form-section">
-  <h3>Nutrition Information</h3>
-  {nutritions.map((nutrition, index) => (
-    <div key={index} className="size-row">
-      <div className="form-group">
-        <label>Nutrition:</label>
-        <input
-          type="text"
-          value={nutrition.nutrition}
-          onChange={(e) => handleNutritionChange(e, index, "nutrition")}
-        />
-      </div>
-      <div className="form-group">
-        <label>Value:</label>
-        <input
-          type="text"
-          value={nutrition.value}
-          onChange={(e) => handleNutritionChange(e, index, "value")}
-        />
-      </div>
-      {nutrition._id && (
-        <button type="button" onClick={() => handleDeleteNutrition(nutrition._id)}>
-          Delete Nutrition
-        </button>
-      )}
-    </div>
-  ))}
-  <button type="button" 
-                    className="add-more-sizes-button"
+            </div>
   
-  onClick={handleAddMoreNutrition}>
-    Add More Nutrition
-  </button>
-</div>
-
-{/* includes */}
-
-<div className="form-section">
-  <h3>Includes</h3>
-  {includes.map((include, index) => (
-    <div key={index} className="size-row">
-      <div className="form-group">
-        <label>Include:</label>
-        <input
-          type="text"
-          value={include.include}
-          onChange={(e) => handleIncludeChange(e, index, "include")}
-        />
-      </div>
-    
-      {include._id && (
-        <button type="button" onClick={() => handleDeleteInclude(include._id)}>
-          Delete Include
-        </button>
-      )}
-    </div>
-  ))}
-  <button type="button" 
-                    className="add-more-sizes-button"
-  
-  onClick={handleAddMoreInclude}>
-    Add More Includes
-  </button>
-</div>
-
-
-              {/* Images Section */}
-              <div className="form-section">
-                <h3>Images</h3>
-                <div className="update_product_Image_section">
-                  <label>Thumbnail:</label>
-                  <input
-                    type="file"
-                    onChange={(e) => handleImageUpload(e, "thumbnail")}
-                  />
-                  {formData.thumbnail && (
-                    <img
-                      src={formData.thumbnail}
-                      alt="Thumbnail"
-                      className="update_product_image_thumbnail"
+            {/* Sizes Section */}
+            <div className="form-section">
+              <h3>Sizes</h3>
+              <div className="size-section">
+                {sizes.map((size, index) => (
+                  <div key={index} className="size-row">
+                    <input
+                      type="text"
+                      name={`size_${index}`}
+                      value={size.size}
+                      placeholder="Size"
+                      onChange={(e) => handleSizeChange(e, index, "size")}
                     />
-                  )}
-                </div>
-
-                <div className="update_product_Image_section">
-                  <label>Product Images:</label>
-                  {formData.image.map((img, index) => (
-                    <div key={index} className="image_wrapper">
-                      <img src={img} alt={`Product ${index}`} />
+                    <input
+                      type="text"
+                      name={`sizetype_${index}`}
+                      value={size.sizetype}
+                      placeholder="Size Type"
+                      onChange={(e) => handleSizeChange(e, index, "sizetype")}
+                    />
+                    <input
+                      type="number"
+                      name={`quantity_${index}`}
+                      value={size.quantity}
+                      placeholder="Quantity"
+                      onChange={(e) => handleSizeChange(e, index, "quantity")}
+                    />
+                    <input
+                      type="number"
+                      name={`price_${index}`}
+                      value={size.price}
+                      placeholder="Price"
+                      onChange={(e) => handleSizeChange(e, index, "price")}
+                    />
+                    <input
+                      type="number"
+                      name={`discountPercentage_${index}`}
+                      value={size.discountPercentage}
+                      placeholder="Discount Percentage"
+                      onChange={(e) =>
+                        handleSizeChange(e, index, "discountPercentage")
+                      }
+                    />
+                    <input
+                      type="number"
+                      name={`FinalPrice_${index}`}
+                      value={calculateFinalPrice(
+                        size.price,
+                        size.discountPercentage
+                      )}
+                      placeholder="Final Price"
+                      onChange={(e) =>
+                        handleSizeChange(e, index, "FinalPrice")
+                      }
+                    />
+                    {size._id && (
                       <button
                         type="button"
-                        className="remove_image_button"
-                        onClick={() => handleImageRemove(index)}
+                        onClick={() =>
+                          setShowConfirm({ show: true, sizeId: size._id })
+                        }
                       >
-                        Remove
+                        Delete
                       </button>
-                    </div>
-                  ))}
-                  <input
-                    type="file"
-                    onChange={(e) => handleImageUpload(e, "image")}
-                  />
-                </div>
-              </div>
-
-              {/* Submit Button */}
-              <div className="form-section">
+                    )}
+                  </div>
+                ))}
                 <button
-                  type="submit"
-                  className="admin_panel_button"
-                  disabled={updateloader}
+                  type="button"
+                  className="add-more-sizes-button"
+                  onClick={handleAddMoreSizes}
                 >
-                  {updateloader ? <Loader /> : "Update Product"}
+                  Add More Sizes
                 </button>
               </div>
-            </form>
-          </div>
+            </div>
+  
+            {/* Nutrition Section */}
+            <div className="form-section">
+              <h3>Nutrition Information</h3>
+              {nutritions.map((nutrition, index) => (
+                <div key={index} className="size-row">
+                  <div className="form-group">
+                    <label>Nutrition:</label>
+                    <input
+                      type="text"
+                      value={nutrition.nutrition}
+                      onChange={(e) =>
+                        handleNutritionChange(e, index, "nutrition")
+                      }
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Value:</label>
+                    <input
+                      type="text"
+                      value={nutrition.value}
+                      onChange={(e) => handleNutritionChange(e, index, "value")}
+                    />
+                  </div>
+                  {nutrition._id && (
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteNutrition(nutrition._id)}
+                    >
+                      Delete Nutrition
+                    </button>
+                  )}
+                </div>
+              ))}
+              <button
+                type="button"
+                className="add-more-sizes-button"
+                onClick={handleAddMoreNutrition}
+              >
+                Add More Nutrition
+              </button>
+            </div>
+  
+            {/* Includes Section */}
+            <div className="form-section">
+              <h3>Includes</h3>
+              {includes.map((include, index) => (
+                <div key={index} className="size-row">
+                  <div className="form-group">
+                    <label>Include:</label>
+                    <input
+                      type="text"
+                      value={include.include}
+                      onChange={(e) =>
+                        handleIncludeChange(e, index, "include")
+                      }
+                    />
+                  </div>
+                  {include._id && (
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteInclude(include._id)}
+                    >
+                      Delete Include
+                    </button>
+                  )}
+                </div>
+              ))}
+              <button
+                type="button"
+                className="add-more-sizes-button"
+                onClick={handleAddMoreInclude}
+              >
+                Add More Includes
+              </button>
+            </div>
+  
+            {/* Images Section */}
+            <div className="form-section">
+              <h3>Images</h3>
+              <div className="update_product_Image_section">
+                <label>Thumbnail:</label>
+                <input
+                  type="file"
+                  onChange={(e) => handleImageUpload(e, "thumbnail")}
+                />
+                {formData.thumbnail && (
+                  <img
+                    src={formData.thumbnail}
+                    alt="Thumbnail"
+                    className="update_product_image_thumbnail"
+                  />
+                )}
+              </div>
+  
+              <div className="update_product_Image_section">
+                <label>Product Images:</label>
+                {formData.image.map((img, index) => (
+                  <div key={index} className="image_wrapper">
+                    <img src={img} alt={`Product ${index}`} />
+                    <button
+                      type="button"
+                      className="remove_image_button"
+                      onClick={() => handleImageRemove(index)}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))}
+                <input
+                  type="file"
+                  onChange={(e) => handleImageUpload(e, "image")}
+                />
+              </div>
+            </div>
+  
+            {/* Submit Button */}
+            <div className="form-section">
+              <button
+                type="submit"
+                className="admin_panel_button"
+                disabled={updateloader}
+              >
+                {updateloader ? <Loader /> : "Update Product"}
+              </button>
+            </div>
+          </form>
         </div>
-      )}
-
-      {/* Confirm Delete Size Popup */}
-      {showConfirm.show && (
-        <div
-          style={{
-            position: "fixed",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            backgroundColor: "#fff",
-            padding: "20px",
-            boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.8)",
-            zIndex: 1000,
-            width: "500px",
-            fontSize: "20px",
-            textAlign: "center",
-          
-
-          }}
-        >
-          <p>Are you sure you want to delete this size?</p>
-          <div
-          
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "40px",
-          }}
-          >
-
+      </div>
+    )}
+  
+    {/* Confirm Delete Size Popup */}
+    {showConfirm.show && (
+      <div className="confirm-delete-popup">
+        <p>Are you sure you want to delete this size?</p>
+        <div>
           <button
             onClick={() => handleDeleteSize(showConfirm.sizeId)}
-            style={{ marginRight: "10px" }}
             className="btn btn-danger"
-            >
+          >
             Yes
           </button>
-          <button className="btn btn-secondary" onClick={() => setShowConfirm({ show: false, sizeId: null })}>
+          <button
+            className="btn btn-secondary"
+            onClick={() => setShowConfirm({ show: false, sizeId: null })}
+          >
             No
           </button>
-            </div>
         </div>
-      )}
-    </>
+      </div>
+    )}
+  </>
+  
   );
 }
 

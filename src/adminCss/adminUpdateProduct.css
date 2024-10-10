@@ -1,201 +1,192 @@
+/* General page layout */
 .main_update_product_page {
-  max-width: 800px;
-  margin: 0 auto;
   padding: 20px;
+  background-color: #f4f4f9;
+  font-family: 'Helvetica', sans-serif;
 }
 
-.update-product-container {
-  background-color: #f8f9fa;
-  padding: 20px;
+h2 {
+  color: var(--gay-bg-color);
+  margin-bottom: 20px;
+}
+
+form {
+  background-color: white;
+  padding: 30px;
   border-radius: 10px;
-  margin-top: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.back_arrow_icon {
-  margin-bottom: 20px;
-  cursor: pointer;
-  transition: transform 0.3s;
+/* Form sections */
+.form-section {
+  margin-bottom: 30px;
 }
 
-.back_arrow_icon:hover {
-  transform: translateX(-3px);
+.form-section h3 {
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  margin-bottom: 15px;
 }
 
-.update-product-container h2 {
-  margin-bottom: 20px;
-  color: #343a40;
-}
-
-.update-product-container form div {
-  margin-bottom: 20px;
-}
-
-.update-product-container form label {
-  font-weight: bold;
-}
-
-.update-product-container form input[type="text"],
-.update-product-container form textarea,
-.update-product-container form input[type="number"],
-.update-product-container form select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ced4da;
-  border-radius: 5px;
-}
-
-.update-product-container form textarea {
-  height: 100px;
-}
-
-.update-product-container form .update_product_Image_section {
-  margin-bottom: 20px;
-}
-
-.update-product-container form .image_wrapper {
-  margin-bottom: 10px;
-}
-
-.update-product-container form .image_wrapper img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 5px;
-}
-
-.update-product-container form .remove_image_button {
-  padding: 5px 10px;
-}
-
-.update-product-container form .add_more_images_button {
-  padding: 10px;
-}
-
-.update-product-container form .update_product_image_thumbnail {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 5px;
-  margin-top: 10px;
-}
-.update_product_button{
-  padding: 10px 20px;
-  background-color: var(--primary-color);
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-
-
-/* Styles for each individual image container */
-.update-product-container form .update_image_container_single_image {
-  margin-bottom: 10px;
-  border: 1px solid #ced4da;
-  padding: 10px;
-  border-radius: 5px;
+/* Form inputs */
+.form-group {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  margin-bottom: 15px;
 }
 
-.update-product-container form .update_image_container_single_image img {
-  width: 100px;
-  height: auto;
-  object-fit: cover;
+.form-group label {
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  padding: 10px;
+  font-size: 1rem;
   border-radius: 5px;
-  margin-right: 10px;
+  border: 1px solid #ccc;
+  transition: all 0.2s;
 }
 
-.update-product-container form .update_image_container_single_image input[type="file"] {
-  flex: 1; /* Take remaining space */
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: var(--primary-color);
+  outline: none;
 }
 
-.update-product-container form .update_image_container_single_image progress {
-  width: 100%;
-  margin-top: 5px;
-}
-
-.update-product-container form .update_image_container_single_image button {
-  margin-left: 10px;
-  padding: 5px 10px;
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-/* Styles for the "Add More Images" button */
-.update-product-container form .add_more_image_button {
-  margin-top: 10px;
-  padding: 10px 20px;
-  background-color: var(--primary-color);
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-/* Styles for the thumbnail */
-.update-product-container form .update_product_image_thumbnail {
-  width: 100px;
-  height: auto;
-  object-fit: cover;
-  border-radius: 5px;
-  margin-top: 10px;
-}
-
-/* Styles for the submit button */
-.update-product-container form .admin_panel_button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: var(--primary-color);
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.update-product-container form .admin_panel_button:hover {
-  background-color: #007bff;
-}
-
-
-/*  */
-/* Additional styles for size section */
+/* Size section */
 .size-section {
-  margin-bottom: 20px;
+  background-color: #f0f0f5;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #dcdcdc;
 }
 
 .size-row {
   display: flex;
+  gap: 15px;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .size-row input {
-  margin-right: 10px;
   padding: 10px;
-  border: 1px solid #ced4da;
+  border: 1px solid #ccc;
   border-radius: 5px;
-  flex: 1;
-}
-
-.size-row button {
-  padding: 5px 10px;
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
 }
 
 .add-more-sizes-button {
-  padding: 10px 20px;
-  background-color: #28a745;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.add-more-sizes-button:hover {
+  background-color: #163b72;
+}
+
+/* Image Section */
+.update_product_Image_section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.update_product_image_thumbnail {
+  max-width: 200px;
+  margin-top: 10px;
+}
+
+.image_wrapper {
+  position: relative;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.image_wrapper img {
+  max-width: 150px;
+  border-radius: 10px;
+}
+
+.remove_image_button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: red;
   color: white;
   border: none;
-  border-radius: 5px;
+  padding: 5px 10px;
   cursor: pointer;
+  border-radius: 50%;
+}
+
+.remove_image_button:hover {
+  background-color: darkred;
+}
+
+/* Confirmation Popup */
+.confirm-delete-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  width: 400px;
+  border-radius: 10px;
+  text-align: center;
+  
+}
+
+.confirm-delete-popup p {
+  font-size: 1.2rem;
+  color: var(--gay-bg-color);
+  margin-bottom: 20px;
+}
+
+.confirm-delete-popup .btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  margin: 20px;
+}
+
+.confirm-delete-popup .btn-danger {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.confirm-delete-popup .btn-secondary {
+  background-color: #7f8c8d;
+  color: white;
+}
+
+.confirm-delete-popup .btn:hover {
+  opacity: 0.8;
+}
+
+/* Submit Button */
+.admin_panel_button {
+  background-color: #27ae60;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.admin_panel_button:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
 }
