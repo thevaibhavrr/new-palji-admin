@@ -174,21 +174,21 @@ function UpdateProduct() {
     setFormData({ ...formData, image: updatedImages });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => { 
     e.preventDefault();
     try {
       setUpdateLoader(true);
       await makeApi(`/api/update-product/${productId}`, "PUT", formData);
-      for (const size of sizes) {
-        if (size._id) {
-          await makeApi(`/api/update-productsize/${size._id}`, "PUT", size);
-        } else {
-          await makeApi(`/api/add-productsize`, "POST", {
-            productId,
-            ...size,
-          });
-        }
-      }
+      // for (const size of sizes) {
+      //   if (size._id) {
+      //     await makeApi(`/api/update-productsize/${size._id}`, "PUT", size);
+      //   } else {
+      //     await makeApi(`/api/add-productsize`, "POST", {
+      //       productId,
+      //       ...size,
+      //     });
+      //   }
+      // }
       for (const nutrition of nutritions) {
         if (nutrition._id) {
           await makeApi(`/api/update-nutrition/${nutrition._id}`, "PUT", nutrition);
