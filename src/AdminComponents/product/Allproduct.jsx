@@ -25,8 +25,8 @@ const Allproduct = () => {
       try {
         setLoading(true);
         const response = await makeApi(
-          `/api/get-all-products-for-admin?name=${searchQuery}&IsOutOfStock=${stockQuery}&page=${currentPage}&perPage=${ResultPerPage}&category=${category}&productType=${productType}`,
-          // `/api/get-all-products`,
+          // `/api/get-all-products-for-admin?name=${searchQuery}&IsOutOfStock=${stockQuery}&page=${currentPage}&perPage=${ResultPerPage}&category=${category}&productType=${productType}`,
+          `/api/get-all-products`,
           "GET"
         );
         console.log(response.data.products.length);

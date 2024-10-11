@@ -4,6 +4,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { makeApi } from "../../api/callApi";
 import Loader from "../../components/loader/loader";
 import uploadToCloudinary from "../../utils/cloudinaryUpload";
+import { toast, ToastContainer } from "react-toastify";
 
 function UpdateProduct() {
   const navigate = useNavigate();
@@ -135,14 +136,24 @@ function UpdateProduct() {
   const handleSizeChange = (e, index, field) => {
     const updatedSizes = [...sizes];
     updatedSizes[index][field] = e.target.value;
+  
+    // Assuming 'field' could be 'price' or 'discountPercentage'
+    if (field === 'price' || field === 'discountPercentage') {
+      const price = parseFloat(updatedSizes[index].price) || 0; // Ensure price is a number
+      const discountPercentage = parseFloat(updatedSizes[index].discountPercentage) || 0; // Ensure discountPercentage is a number
+      updatedSizes[index].FinalPrice = calculateFinalPrice(price, discountPercentage);
+    }
+  
     setSizes(updatedSizes);
+    console.log("change-=-=", updatedSizes); // Log the updated sizes
   };
+  console.log(  "chnage-=-=",sizes);
   const calculateFinalPrice = (price, discountPercentage) => {
     return price - (price * (discountPercentage / 100));
   };
 
   const handleAddMoreSizes = () => {
-    setSizes([...sizes, { size: "null", sizetype: "null", quantity: "",price: '',discountPercentage: 0,FinalPrice: ''  }]);
+    setSizes([...sizes, { size: "null", sizetype: "null", quantity: "",price:'',discountPercentage: 0,FinalPrice: ''  }]);
   };
 
   const handleDeleteSize = async (sizeId) => {
@@ -179,16 +190,6 @@ function UpdateProduct() {
     try {
       setUpdateLoader(true);
       await makeApi(`/api/update-product/${productId}`, "PUT", formData);
-      // for (const size of sizes) {
-      //   if (size._id) {
-      //     await makeApi(`/api/update-productsize/${size._id}`, "PUT", size);
-      //   } else {
-      //     await makeApi(`/api/add-productsize`, "POST", {
-      //       productId,
-      //       ...size,
-      //     });
-      //   }
-      // }
       for (const nutrition of nutritions) {
         if (nutrition._id) {
           await makeApi(`/api/update-nutrition/${nutrition._id}`, "PUT", nutrition);
@@ -220,9 +221,8 @@ function UpdateProduct() {
           });
         }
       }
-      
+      toast("product update successfully")
       console.log("Product updated successfully!");
-      // navigate("/admin/allproducts");
     } catch (error) {
       console.error("Error updating product:", error);
     } finally {
@@ -237,6 +237,7 @@ function UpdateProduct() {
       <Loader />
     ) : (
       <div className="main_update_product_page">
+        <ToastContainer position="top-center" autoClose={2000} />
         <div>
           <Link to={"/admin/allproducts"}>
             <svg
@@ -345,10 +346,7 @@ function UpdateProduct() {
                     <input
                       type="number"
                       name={`FinalPrice_${index}`}
-                      value={calculateFinalPrice(
-                        size.price,
-                        size.discountPercentage
-                      )}
+                      value={calculateFinalPrice(size.price,size.discountPercentage)}
                       placeholder="Final Price"
                       onChange={(e) =>
                         handleSizeChange(e, index, "FinalPrice")

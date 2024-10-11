@@ -26,7 +26,6 @@ function AdminaddProduct() {
   const [thumbnailUploadProgress, setThumbnailUploadProgress] = useState(0);
   const [productSizes, setProductSizes] = useState([{ size: 'null', sizetype: 'null', quantity: '',price: '',discountPercentage: 0,FinalPrice: '' }]);
   const [productNuturitions, setProductNuturitions] = useState([{ nutrition: '', value: '' }]);
-  console.log(productNuturitions);
   const [deliverables, setDeliverables] = useState([]);
 
 
@@ -203,10 +202,8 @@ function AdminaddProduct() {
   const handleImageUpload = async (event, index) => {
     try {
       const file = event.target.files[0];
-      console.log("1",file);
 
       if (file) {
-        console.log("-=-=",file);
         const uploadedImageUrl = await uploadToCloudinary(file, setUploadProgress);
         const imageURL = uploadedImageUrl;
         handleImageChange(index, imageURL);
