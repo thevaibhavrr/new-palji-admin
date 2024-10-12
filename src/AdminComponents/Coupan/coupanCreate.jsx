@@ -20,8 +20,8 @@ const AddCoupan = () => {
   const [CoupanForList, setCoupanForList] = useState([
     "all",
     "minimumOrderValue",
-    "category",
-    "product",
+    // "category",
+    // "product",
   ]);
 
   const [errorMessage, setErrorMessage] = useState("");
