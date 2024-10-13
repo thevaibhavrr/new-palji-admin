@@ -23,6 +23,7 @@ function Adminsidebar() {
 
   return (
     <div className={`main_admin_sidebar  ${isOpen ? 'open' : 'closed'}`}>
+      <div className="admin_sidebar_second" >
       <button className="toggleButton" onClick={toggleSidebar}>
         {isOpen ? 'Close' : 'Open'}
       </button>
@@ -96,6 +97,7 @@ function Adminsidebar() {
           <button className="btn btn-danger" onClick={handleLogout}>
             Logout
           </button>
+        </div>
         </div>
     </div>
   );

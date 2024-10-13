@@ -132,37 +132,37 @@ function Admindasboard() {
         <Loader />
       ) : (
         <div className="dashboard-container">
-          <div className="dashboard-card">
-            <h2>Total Users</h2>
+          {/* <div className="dashboard-card">
+            <h2> Users</h2>
             <p>{dasboardData?.totalUsers}</p>
-          </div>
+          </div> */}
           <div className="dashboard-card">
-            <h2>Total Products</h2>
+            <h2> Products</h2>
             <p>{dasboardData?.totalProducts}</p>
           </div>
 
           <div className="dashboard-card">
-            <h2>Total Orders</h2>
+            <h2> Orders</h2>
             <p>{dasboardData?.totalOrders}</p>
           </div>
           <div className="dashboard-card">
-            <h2>Total Pending Orders</h2>
+            <h2> Pending Orders</h2>
             <p>{dasboardData?.totalPandingOrders}</p>
           </div>
           <div className="dashboard-card">
-            <h2>Total Shipped Orders</h2>
+            <h2> Shipped Orders</h2>
             <p>{dasboardData?.totalShippedOrders}</p>
           </div>
           <div className="dashboard-card">
-            <h2>Total Delivered Orders</h2>
+            <h2> Delivered Orders</h2>
             <p>{dasboardData?.totalDeliveredOrders}</p>
           </div>
           <div className="dashboard-card">
-            <h2>Total Canceled Orders</h2>
+            <h2> Canceled Orders</h2>
             <p>{dasboardData?.totalCanceledOrders}</p>
           </div>
           <div className="dashboard-card">
-            <h2>Total Returned Orders</h2>
+            <h2> Returned Orders</h2>
             <p>{dasboardData?.totalReturnedOrders}</p>
           </div>
         </div>
