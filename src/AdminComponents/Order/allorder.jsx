@@ -5,11 +5,14 @@ import { makeApi } from "../../api/callApi";
 import { Link } from "react-router-dom";
 import UpdateOrderPopup from "./updateorder";
 import Loader from "../../components/loader/loader";
-
+import { useLocation } from "react-router-dom"; 
 function AllOrder() {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const Dstatus= queryParams.get("status") || "";
   const [loading, setLoading] = useState(false);
   const [orders, setOrders] = useState([]);
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState(Dstatus);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState("");
 
@@ -25,7 +28,7 @@ function AllOrder() {
     }
   };
 
-  useEffect(() => {
+  useEffect(() => { 
     fetchOrders();
   }, [status]);
 

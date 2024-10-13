@@ -61,6 +61,9 @@
   .closed {
     width: 50px;
   }
+  .closed .admin_sidebar_second {
+    width: 80px;
+  }
   
   .closed .admin_sidebar_menu_list {
     display: none;
