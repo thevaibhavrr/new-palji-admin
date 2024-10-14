@@ -490,14 +490,16 @@ function UpdateProduct() {
             </div>
   
             {/* Submit Button */}
-            <div className="form-section">
+            <div className="form-section text-center">
+              {updateloader ? <Loader /> : 
               <button
-                type="submit"
-                className="admin_panel_button"
-                disabled={updateloader}
+              type="submit"
+              className="admin_panel_button"
+              disabled={updateloader}
               >
-                {updateloader ? <Loader /> : "Update Product"}
+                Update Product
               </button>
+              }
             </div>
           </form>
         </div>

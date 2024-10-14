@@ -153,8 +153,9 @@ const AddCoupan = () => {
               type="text"
               id="Coupancode"
               value={Coupancode}
-              onChange={(e) => setCoupancode(e.target.value)}
+              onChange={(e) => setCoupancode(e.target.value.toUpperCase())}
               required
+              style={{ textTransform: 'uppercase' }}
             />
           </div>
           <div className="form-group">
@@ -172,6 +173,7 @@ const AddCoupan = () => {
               className="add_product_input_filed add_product_dropdown"
               // value={CoupanFor}
               onChange={(e) => setSelectedCoupanFor(e.target.value)}
+              required
             >
               <option value="">Coupan For</option>
               {CoupanForList.map((Coupan) => (
