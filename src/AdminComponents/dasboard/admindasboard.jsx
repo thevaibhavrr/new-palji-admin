@@ -14,7 +14,7 @@ function Admindasboard() {
   const [loading, setLoading] = useState(false);
   const [TotalRevenue, setTotalRevenue] = useState();
 
-  const getDasboardData = async () => {
+  const getDasboardData = async () => {  
     try {
       setLoading(true);
 

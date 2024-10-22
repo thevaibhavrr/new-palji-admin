@@ -27,6 +27,9 @@ function AdminaddProduct() {
   const [productSizes, setProductSizes] = useState([{ size: 'null', sizetype: 'null', quantity: '',price: '',discountPercentage: 0,FinalPrice: '' }]);
   const [productNuturitions, setProductNuturitions] = useState([{ nutrition: '', value: '' }]);
   const [deliverables, setDeliverables] = useState([]);
+  const [subcategory, setSubcategory] = useState(""); 
+
+
 
 
   // size
@@ -106,6 +109,8 @@ function AdminaddProduct() {
             setLoading(false);
           }
         }
+
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const requiredFields = [];
@@ -116,7 +121,7 @@ function AdminaddProduct() {
     if (!thumbnail) requiredFields.push("Thumbnail");
     if (!productType) requiredFields.push("Product Type");
     if (images.length === 0 || images.includes("")) requiredFields.push("Product Images");
-
+    
     if (requiredFields.length > 0) {
       const fieldNames = requiredFields.join(", ");
       toast.error(`Please fill all required fields: ${fieldNames}`);
@@ -133,6 +138,7 @@ function AdminaddProduct() {
         image: images,
         thumbnail,
         category,
+        subcategory,
         brand,
         size,
         productType,
@@ -148,6 +154,7 @@ function AdminaddProduct() {
       setImages([""]);
       setThumbnail("");
       setCategory("");
+      setSubcategory("");
       setBrand("");
       setSize("");
       setProductType("Domestic");
@@ -468,14 +475,7 @@ function AdminaddProduct() {
         {/* Additional Details */}
         <div className="section-wrapper">
           <h3>Additional Details</h3>
-          {/* <select
-            className="add_product_input_filed"
-            value={productType}
-            onChange={(e) => setProductType(e.target.value)}
-          >
-            <option value="Domestic">Domestic</option>
-            <option value="International">International</option>
-          </select> */}
+         
           <select
             className="add_product_input_filed"
             value={category}
@@ -488,14 +488,22 @@ function AdminaddProduct() {
               </option>
             ))}
           </select>
-          {/* <input
-            type="text"
-            className="add_product_input_filed"
-            placeholder="Brand"
-            value={brand}
-            onChange={(e) => setBrand(e.target.value)}
-          /> */}
-         
+          {category && (
+            <select
+              className="add_product_input_filed"
+              value={subcategory}
+              onChange={(e) => setSubcategory(e.target.value)}
+            >
+              <option value="">Select Subcategory</option>
+              {categories.find(cat => cat._id === category).subcategories.map((sub) => (
+                <option key={sub._id} value={sub._id}>
+                  {sub.name}
+                </option>
+            ))}
+          </select>
+        )}
+
+
         </div>
   
         {/* Submit Button */}

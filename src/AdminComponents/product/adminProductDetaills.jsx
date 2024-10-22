@@ -279,7 +279,8 @@ function ProductDetails() {
 
                 <section className="product-additional-section">
                   <h3>Additional Details</h3>
-                  <p><strong>Category:</strong> {product.category.name}</p>
+                  <p><strong>Category:</strong> {product?.category?.name}</p>
+                  <p> <strong>Sub-category </strong> {product?.subcategory?.name}  </p>
                 </section>
 
                 <section className="product-additional-section">

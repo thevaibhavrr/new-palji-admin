@@ -51,6 +51,12 @@ textarea {
   background-color: var(--secondary-color);
 }
 
+.subcategory-section {
+  background: #d6d5d5;
+  padding: 25px; 
+  margin-top: 50px ;
+}
+
 /* Back Button Styles */
 .back_button_add_catogory {
   margin-bottom: 20px;
