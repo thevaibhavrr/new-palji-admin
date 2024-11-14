@@ -37,33 +37,33 @@ function UpdateProduct() {
     Tax: "",
     PriceAfterDiscount: "",
   });
-
   const fetchProduct = async () => {
     try {
       setLoading(true);
       const response = await makeApi(`/api/get-single-product/${productId}`, "GET");
+      console.log(response.data.product)
 
-      const productData = response.data.product;
-      setProduct(productData);
-      setSizes(response.data.sizes);
-      setNutritions(response.data.productNuturitions || []);
-      setIncludes(response.data.include || []);
+      const productData = await response?.data?.product;
+      await  setProduct(productData);
+      await setSizes(response?.data?.sizes);
+      await setNutritions(response?.data?.productNuturitions || []);
+      await setIncludes(response?.data?.include || []);
 
       // Set form data with the product details
-      setFormData({
-        name: productData.name,
-        description: productData.description,
-        price: productData.price,
-        quantity: productData.quantity,
-        category: productData.category._id,
-        subcategory: productData.subcategory._id,
-        brand: productData.brand,
-        image: productData.image,
-        thumbnail: productData.thumbnail,
-        discountPercentage: productData.discountPercentage,
-        productType: productData.productType,
-        Tax: productData.Tax,
-        PriceAfterDiscount: productData.PriceAfterDiscount,
+      await setFormData({
+        name: productData?.name,
+        description: productData?.description,
+        price: productData?.price,
+        quantity: productData?.quantity,
+        category: productData?.category?._id,
+        subcategory: productData?.subcategory?._id,
+        brand: productData?.brand,
+        image: productData?.image,
+        thumbnail: productData?.thumbnail,
+        discountPercentage: productData?.discountPercentage,
+        productType: productData?.productType,
+        Tax: productData?.Tax,
+        PriceAfterDiscount: productData?.PriceAfterDiscount,
       });
     } catch (error) {
       console.error("Error fetching product details:", error);
@@ -149,9 +149,7 @@ function UpdateProduct() {
     }
 
     setSizes(updatedSizes);
-    console.log("change-=-=", updatedSizes); // Log the updated sizes
   };
-  console.log("chnage-=-=", sizes);
   const calculateFinalPrice = (price, discountPercentage) => {
     return price - (price * (discountPercentage / 100));
   };
@@ -230,8 +228,8 @@ function UpdateProduct() {
     } catch (error) {
       console.error("Error updating product:", error);
     } finally {
-      setUpdateLoader(false);
       fetchProduct()
+      setUpdateLoader(false);
     }
   };
 
