@@ -1,9 +1,11 @@
-// import React, { useState, useEffect } from "react";
+
+// import React, { useState, useEffect } from "react"; 
 // import "../../adminCss/catogory/getallcatogory.css";
 // import { makeApi } from "../../api/callApi";
 // import Loader from "../../components/loader/loader";
 // import { Link } from "react-router-dom";
 // import ConfirmationModal from "../product/admindeleteproduct";
+
 // function Getallcatogory() {
 //   const [categories, setCategories] = useState([]);
 //   const [loading, setLoading] = useState(false);
@@ -25,12 +27,14 @@
 //     }
 //     fetchCategories();
 //   }, []);
+
 //   const handleDeleteConfirm = () => {
 //     if (deleteProductId) {
 //       deleteProduct(deleteProductId);
 //       setDeleteProductId(null);
 //     }
 //   };
+
 //   const deleteProduct = async (productId) => {
 //     try {
 //       console.log(productId);
@@ -64,6 +68,20 @@
 //                   <div>
 //                     <h3>{category?.name}</h3>
 //                     <p>{category?.description}</p>
+
+//                     {/* Display Subcategories */}
+//                     {category.subcategories.length > 0 && (
+//                       <div className="subcategory-list">
+//                         <h4>Subcategories:</h4>
+//                         <ul>
+//                           {category.subcategories.map((subcategory) => (
+//                             <li key={subcategory._id} className="subcategory-item">
+//                               <span>{subcategory.name}</span>
+//                             </li>
+//                           ))}
+//                         </ul>
+//                       </div>
+//                     )}
 //                   </div>
 //                   <div>
 //                     <div className="all_products_page_button">
@@ -96,7 +114,6 @@
 // }
 
 // export default Getallcatogory;
-
 
 import React, { useState, useEffect } from "react"; 
 import "../../adminCss/catogory/getallcatogory.css";
@@ -167,6 +184,23 @@ function Getallcatogory() {
                   <div>
                     <h3>{category?.name}</h3>
                     <p>{category?.description}</p>
+
+                    {/* Display Pin Codes if Available */}
+                    {category.availablePinCodes.length > 0 && (
+                      <div className="pin-codes-list">
+                        <h6> <b>Available Pin Codes:</b></h6>
+                          {category.availablePinCodes.map((pinCode, index) => (
+                            <div className="d-flex justify-content-center" >
+                              <div className="w-25">
+                                <b>
+                            {index} :
+                                </b>
+                              </div>
+                            <div key={index} style={{ height: "30px", width:"90%" }} >{pinCode}</div>
+                            </div>
+                          ))}
+                      </div>
+                    )}
 
                     {/* Display Subcategories */}
                     {category.subcategories.length > 0 && (
