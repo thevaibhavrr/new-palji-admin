@@ -123,7 +123,7 @@
 //                 </p>
 //               </div>
 //             </div>
-          
+
 //             {/* shipping address */}
 //             <div className="order_shipping_address_section order_details_cards">
 //               <h3>Shipping Address</h3>
@@ -234,6 +234,8 @@
 // }
 
 // export default Orderdetails;
+
+
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { makeApi } from "../../api/callApi";
@@ -244,11 +246,13 @@ function Orderdetails() {
   const [order, setOrder] = useState({});
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
+  const [orderData, setOrderData] = useState(null);
+
 
   const fetchOrder = async () => {
     try {
       setLoading(true);
-      const response = await makeApi(`/api/get-second-order-by-id/${id}`, "GET");
+      const response = await makeApi(`/api/get-second-order-by-id-shiprocket-id/${id}`, "GET");
       setOrder(response.data.secondorder);
     } catch (error) {
       console.log(error);
@@ -260,6 +264,58 @@ function Orderdetails() {
   useEffect(() => {
     fetchOrder();
   }, [id]);
+
+  useEffect(() => {
+    const fetchOrderDetails = async () => {
+      try {
+        setLoading(true);
+        const response = await makeApi(
+          `/api/shiprocket/get-order-by-id/${id}`,
+          "GET"
+        );
+        await setOrderData(response?.data?.data?.data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching order details:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchOrderDetails();
+  }, [id]);
+    const getStatusClass = (status) => {
+    switch (status.toLowerCase()) {
+      case 'pending':
+        return 'pending';
+      case 'shipped':
+        return 'shipped';
+      case 'delivered':
+        return 'delivered';
+      case 'canceled':
+        return 'canceled';
+      case 'new':  // New status added
+        return 'new';
+      default:
+        return 'default';
+    }
+  };
+
+
+  const {
+    customer_name,
+    customer_email,
+    customer_phone,
+    customer_address,
+    customer_city,
+    customer_state,
+    customer_country,
+    customer_pincode,
+    payment_method,
+    total,
+    net_total,
+    products,
+    shipments
+  } = orderData || {};
 
   return (
     <>
@@ -287,9 +343,9 @@ function Orderdetails() {
           <h2>Order Details</h2>
           {/* mini order dashboard */}
           <div className="main_mini_order_dashboard_div">
-            <div className="mini_order_dashboard_contact_div">
+            <div className="mini_order_dashboard_contact_div ">
               <div>Status</div>
-              <div>{order.status}</div>
+              <div> <b>{orderData?.status}</b> </div>
             </div>
             <div className="mini_order_dashboard_contact_div">
               <div>Order date</div>
@@ -336,13 +392,14 @@ function Orderdetails() {
               </div>
             </div>
           </div>
-
+  
           <div className="order_details_main_section">
             {/* user section */}
             <div className="user_section order_details_cards">
-              <h3>User Details</h3>
+              <h3 className="order_details_header">User Details</h3>
               <div>
-                <img loading="lazy"
+                <img
+                  loading="lazy"
                   src={order?.userId?.userImage}
                   alt="User"
                   className="user-image"
@@ -359,10 +416,10 @@ function Orderdetails() {
                 </p>
               </div>
             </div>
-          
+  
             {/* shipping address */}
             <div className="order_shipping_address_section order_details_cards">
-              <h3>Shipping Address</h3>
+              <h3 className="order_details_header">Shipping Address</h3>
               <div>
                 <p>
                   <b>Firstname:</b> {order?.shippingAddress?.firstname}
@@ -389,19 +446,86 @@ function Orderdetails() {
                   <b>City:</b> {order?.shippingAddress?.city}
                 </p>
               </div>
+
+              {shipments && (
+            <>
+              <p> <strong>Shipment ID:</strong> {shipments.id || "N/A"}  </p>
+              <p><strong>Order ID:</strong> {shipments.order_id || "N/A"}</p>
+              <p><strong>Channel ID:</strong> {shipments.channel_id || "N/A"}</p>
+              <p><strong>Code:</strong> {shipments.code || "N/A"}</p>
+              <p><strong>Cost:</strong> {shipments.cost || "N/A"}</p>
+              <p><strong>Tax:</strong> {shipments.tax || "N/A"}</p>
+              <p><strong>AWB:</strong> {shipments.awb || "N/A"}</p>
+              <p><strong>Last Mile AWB:</strong> {shipments.last_mile_awb || "N/A"}</p>
+              <p><strong>ETD:</strong> {shipments.etd || "N/A"}</p>
+              <p><strong>Quantity:</strong> {shipments.quantity || "N/A"}</p>
+              <p><strong>Weight:</strong> {shipments.weight || "N/A"}</p>
+              <p><strong>Dimensions:</strong> {shipments.dimensions || "N/A"}</p>
+              <p><strong>Comment:</strong> {shipments.comment || "N/A"}</p>
+              <p><strong>Courier:</strong> {shipments.courier || "N/A"}</p>
+              <p><strong>Courier ID:</strong> {shipments.courier_id || "N/A"}</p>
+              <p><strong>Manifest ID:</strong> {shipments.manifest_id || "N/A"}</p>
+              <p><strong>Manifest Escalate:</strong> {shipments.manifest_escalate || "N/A"}</p>
+              <p><strong>Status:</strong> {shipments.status || "N/A"}</p>
+              <p><strong>ISD Code:</strong> {shipments.isd_code || "N/A"}</p>
+              <p><strong>Created At:</strong> {shipments.created_at || "N/A"}</p>
+              <p><strong>Updated At:</strong> {shipments.updated_at || "N/A"}</p>
+              <p><strong>POD:</strong> {shipments.pod || "N/A"}</p>
+              <p><strong>EWAY Bill Number:</strong> {shipments.eway_bill_number || "N/A"}</p>
+              <p><strong>EWAY Bill Date:</strong> {shipments.eway_bill_date || "N/A"}</p>
+              <p><strong>Length:</strong> {shipments.length || "N/A"}</p>
+              <p><strong>Breadth:</strong> {shipments.breadth || "N/A"}</p>
+              <p><strong>Height:</strong> {shipments.height || "N/A"}</p>
+              <p><strong>RTO Initiated Date:</strong> {shipments.rto_initiated_date || "N/A"}</p>
+              <p><strong>RTO Delivered Date:</strong> {shipments.rto_delivered_date || "N/A"}</p>
+              <p><strong>Package Images:</strong> {shipments.package_images || "N/A"}</p>
+              <p><strong>Is RTO:</strong> {shipments.is_rto || "N/A"}</p>
+              <p><strong>EWAY Required:</strong> {shipments.eway_required || "N/A"}</p>
+              <p><strong>Invoice Link:</strong> {shipments.invoice_link || "N/A"}</p>
+              <p><strong>Is Darkstore Courier:</strong> {shipments.is_darkstore_courier || "N/A"}</p>
+              <p><strong>Courier Custom Rule:</strong> {shipments.courier_custom_rule || "N/A"}</p>
+              <p><strong>Is Single Shipment:</strong> {shipments.is_single_shipment || "N/A"}</p>
+              <p><strong>Shipment Type:</strong> {shipments.shipment_type || "N/A"}</p>
+              <p><strong>Shipment Mode:</strong> {shipments.shipment_mode || "N/A"}</p>
+              <p><strong>Shipment Mode ID:</strong> {shipments.shipment_mode_id || "N/A"}</p>
+              <p><strong>Shipment Mode Name:</strong> {shipments.shipment_mode_name || "N/A"}</p>
+              <p><strong>Shipment Mode Type:</strong> {shipments.shipment_mode_type || "N/A"}</p>
+              <p><strong>Shipment Mode Type ID:</strong> {shipments.shipment_mode_type_id || "N/A"}</p>
+              <p><strong>Shipment Mode Type Name:</strong> {shipments.shipment_mode_type_name || "N/A"}</p>
+              <p><strong>Shipment Mode Type Description:</strong> {shipments.shipment_mode_type_description || "N/A"}</p>
+              <p><strong>Shipment Mode Type Code:</strong> {shipments.shipment_mode_type_code || "N/A"}</p>
+              <p><strong>Shipment Mode Type Status:</strong> {shipments.shipment_mode_type_status || "N/A"}</p>
+              <p><strong>Shipment Mode Type Created At:</strong> {shipments.shipment_mode_type_created_at || "N/A"}</p>
+              <p><strong>Shipment Mode Type Updated At:</strong> {shipments.shipment_mode_type_updated_at || "N/A"}</p>
+
+              <p><strong>Shipped Date:</strong> {shipments.shipped_date || "N/A"}</p>
+              <p><strong>Delivered Date:</strong> {shipments.delivered_date || "N/A"}</p>
+              <p><strong>Courier:</strong> {shipments.courier_name || "N/A"}</p>
+              <p><strong>Tracking ID:</strong> {shipments.tracking_id || "N/A"}</p>
+              <p>
+                <strong>Tracking URL:</strong>{" "}
+                {shipments.tracking_url ? (
+                  <a href={shipments.tracking_url} target="_blank" rel="noopener noreferrer">
+                    Track Order
+                  </a>
+                ) : (
+                  "N/A"
+                )}
+              </p>
+            </>
+          )}
             </div>
+  
             {/* payment details */}
             <div className="order_payment_details_section order_details_cards">
               <h3>Payment Details</h3>
               <div>
+                <p><strong>Payment Method:</strong> {payment_method || 'N/A'}</p>
                 <p>
-                  <b>Payment Method:</b> {order?.paymentMethod}
+                  <b>Payment Type:</b> {order?.paymentMethod}
                 </p>
                 <p>
                   <b>Total Price:</b> {order?.CartId?.totalPrice}
-                </p>
-                <p>
-                  <b>Tax Price:</b> {order?.CartId?.taxPrice}
                 </p>
                 <p>
                   <b>Shipping Price:</b> {order?.CartId?.shippingPrice}
@@ -429,45 +553,57 @@ function Orderdetails() {
                 </p>
               </div>
             </div>
-              {/* order items */}
-          </div>
-              <div className="order_item_section order_details_cards">
-              <h3>Order Items</h3>
-              <div className="order_item_div_section_div" >
-                {order?.CartId?.orderItems?.map((item, index) => (
-                  <div key={index} className="order_item_details_div p-4" >
-                    <img loading="lazy"
-                      src={item?.productId?.thumbnail}
-                      alt="Product"
-                      className="product-thumbnail"
-                    />
-                    <p>
-                      <b>Name:</b> {item?.productId?.name}
-                    </p>
-                    <p>
-                      <b>Price:</b> {item?.productId?.price}
-                    </p>
-                    <p><b>Size:</b> {item?.size?.size} {item?.size?.sizetype} </p>
-
-                    <p>
-                      <b>Quantity:</b> {item?.quantity}
-                    </p>
-                    <p>
-                      <b>Total Price:</b> {item?.totalPrice}
-                    </p>
-                    
-                    <p>
-                      
-                      <b>Product Id:</b> <Link to={`/admin/product-details/${item?.productId._id}`} target="_blank" >View</Link>
-                    </p>
-                  </div>
-                ))}
-              </div>
+  
+            {/* Pickup details */}
+            <div className="order_payment_details_section order_details_cards">
+              <h2>Pickup Address</h2>
+              <p><strong>Name:</strong> {orderData?.pickup_address?.name || "N/A"}</p>
+              <p><strong>Phone:</strong> {orderData?.pickup_address?.phone || "N/A"}</p>
+              <p>
+                <strong>Address:</strong>{" "}
+                {`${orderData?.pickup_address?.address || ""}, ${orderData?.pickup_address?.city || ""}, ${orderData?.pickup_address?.state || ""} - ${orderData?.pickup_address?.pin_code || "N/A"}`}
+              </p>
             </div>
+  
+            {/* order items */}
+          </div>
+  
+          <div className="order_item_section order_details_cards">
+            <h3>Order Items</h3>
+            <div className="order_item_div_section_div">
+              {order?.CartId?.orderItems?.map((item, index) => (
+                <div key={index} className="order_item_details_div p-4">
+                  <img
+                    loading="lazy"
+                    src={item?.productId?.thumbnail}
+                    alt="Product"
+                    className="product-thumbnail"
+                  />
+                  <p>
+                    <b>Name:</b> {item?.productId?.name}
+                  </p>
+                  <p>
+                    <b>Price:</b> {item?.productId?.price}
+                  </p>
+                  <p><b>Size:</b> {item?.size?.size} {item?.size?.sizetype}</p>
+                  <p>
+                    <b>Quantity:</b> {item?.quantity}
+                  </p>
+                  <p>
+                    <b>Total Price:</b> {item?.totalPrice}
+                  </p>
+                  <p>
+                    <b>Product Id:</b> <Link to={`/admin/product-details/${item?.productId._id}`} target="_blank">View</Link>
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </>
   );
+  
 }
 
 export default Orderdetails;

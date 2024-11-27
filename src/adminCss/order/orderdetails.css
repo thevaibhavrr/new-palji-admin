@@ -73,6 +73,7 @@
   flex-wrap: wrap;
   justify-content: space-between;
   margin-bottom: 20px;
+  position: relative;
 }
 
 /* Add styles for the mini order dashboard contact div */
@@ -97,6 +98,9 @@
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  max-height: 600px;
+  overflow: scroll;
+  position: relative;
 }
 
 /* Add styles for the user image */
@@ -149,3 +153,11 @@ gap: 30px;
   border: 1px solid black;
   /* background: #000; */
 }
+/* .order_details_header{
+  width: 100%;
+  position: sticky;
+  top: 1px;
+  align-items: start;
+  gap: 0;
+  background: white;
+} */
