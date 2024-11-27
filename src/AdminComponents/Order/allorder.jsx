@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import UpdateOrderPopup from "./updateorder";
 import Loader from "../../components/loader/loader";
 import { useLocation } from "react-router-dom"; 
+
 function AllOrder() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);

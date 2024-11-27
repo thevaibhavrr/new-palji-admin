@@ -17,6 +17,8 @@ import GetallCoupan from "../AdminComponents/Coupan/coupanallcatogory";
 import AddCoupan from "../AdminComponents/Coupan/coupanCreate";
 import EditCoupan from "../AdminComponents/Coupan/coupanUpdate";
 import CouponDetails from "../AdminComponents/Coupan/couapndetails";
+import Orders from "../AdminComponents/shiprocket/Allshiporders";
+import OrderDetails from "../AdminComponents/shiprocket/shiporderdetails";
 
 function Admin() {
 	return (
@@ -65,12 +67,20 @@ function Admin() {
 					{/* orders */}
 					<Route
 						path="/all-orders"
+						element={<Orders />}
+					/>
+					<Route
+						path="/order/:id"
+						element={<OrderDetails />}
+					/>
+					{/* <Route
+						path="/all-orders"
 						element={<Allorder />}
 					/>
 					<Route
 						path="/order/:id"
 						element={<Orderdetails />}
-					/>
+					/> */}
 
 					<Route path="/All-coupan" element={<GetallCoupan />} />
 					<Route path="/add-coupan" element={<AddCoupan />} />
