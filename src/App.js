@@ -7,6 +7,8 @@ import OtpVerifiedForm from './auth/otp';
 import { useEffect } from 'react';
 import Orders from './AdminComponents/shiprocket/Allshiporders';
 import OrderDetails from './AdminComponents/shiprocket/shiporderdetails';
+import Alluser from './AdminComponents/user/alluser';
+import Userdetails from './AdminComponents/user/userdetails';
 
 function App() {
   const history = useNavigate();
@@ -25,8 +27,8 @@ function App() {
         <Route path="/" element={<LoginForm />} />
         <Route path="/Forgot-Password" element={<ForgotPasswordForm />} />
         <Route path="/otp-verified" element={<OtpVerifiedForm />} />
-        <Route path="/test" element={<Orders />} />
-        <Route path="/testt" element={<OrderDetails />} />
+        <Route path="/test" element={<Alluser />} />
+        <Route path="/user-details/:id" element={<Userdetails />} />
        <Route
 					path="/admin/*"
 					element={<Admin />}

@@ -295,63 +295,90 @@ function AdminaddProduct() {
         {/* Product Sizes */}
         <div className="section-wrapper">
           <h3>Product Sizes</h3>
-          {productSizes.map((size, index) => (
-            <div className="size-wrapper" key={index}>
-              
-              <input
-                type="text"
-                name="size"
-                placeholder="Size"
-                value={size.size}
-                onChange={(event) => handleSizeChange(index, event)}
-              />
-              
-              <input
-                type="text"
-                name="sizetype"
-                placeholder="Size Type"
-                value={size.sizetype}
-                onChange={(event) => handleSizeChange(index, event)}
-              />
-              <input
-                type="number"
-                name="quantity"
-                placeholder="Stock"
-                value={size.quantity}
-                onChange={(event) => handleSizeChange(index, event)}
-              />
-              <input
-                type="number"
-                name="price"
-                placeholder="Price"
-                value={size.price}
-                onChange={(event) => handleSizeChange(index, event)}
-              />
-              <input
-                type="number"
-                name="discountPercentage"
-                placeholder="Discount Percentage"
-                value={size.discountPercentage}
-                onChange={(event) => handleSizeChange(index, event)}
-              />
-              <input
-                type="number"
-                name="FinalPrice"
-                placeholder="Final Price"
-                // value={size.price - size.discountPercentage}
-                value={calculateFinalPrice(size.price, size.discountPercentage)}
-                onChange={(event) => handleSizeChange(index, event)}
-              />
+         {productSizes.map((size, index) => (
+  <div className="size-wrapper" key={index}>
+    <div className="input-group">
+      <label htmlFor={`size-${index}`} className="product_add_label">Size</label>
+      <input
+        type="text"
+        name="size"
+        id={`size-${index}`}
+        placeholder="Size"
+        value={size.size}
+        onChange={(event) => handleSizeChange(index, event)}
+      />
+    </div>
 
-              <button
-                type="button"
-                className="w-25 btn btn-danger"
-                onClick={() => handleRemoveSize(index)}
-              >
-                Delete
-              </button>
-            </div>
-          ))}
+    <div className="input-group">
+      <label htmlFor={`sizetype-${index}`} className="product_add_label">Size Type</label>
+      <input
+        type="text"
+        name="sizetype"
+        id={`sizetype-${index}`}
+        placeholder="Size Type"
+        value={size.sizetype}
+        onChange={(event) => handleSizeChange(index, event)}
+      />
+    </div>
+
+    <div className="input-group">
+      <label htmlFor={`quantity-${index}`} className="product_add_label">Stock</label>
+      <input
+        type="number"
+        name="quantity"
+        id={`quantity-${index}`}
+        placeholder="Stock"
+        value={size.quantity}
+        onChange={(event) => handleSizeChange(index, event)}
+      />
+    </div>
+
+    <div className="input-group">
+      <label htmlFor={`price-${index}`} className="product_add_label">Price</label>
+      <input
+        type="number"
+        name="price"
+        id={`price-${index}`}
+        placeholder="Price"
+        value={size.price}
+        onChange={(event) => handleSizeChange(index, event)}
+      />
+    </div>
+
+    <div className="input-group">
+      <label htmlFor={`discountPercentage-${index}`} className="product_add_label">Discount Percentage</label>
+      <input
+        type="number"
+        name="discountPercentage"
+        id={`discountPercentage-${index}`}
+        placeholder="Discount Percentage"
+        value={size.discountPercentage}
+        onChange={(event) => handleSizeChange(index, event)}
+      />
+    </div>
+
+    <div className="input-group">
+      <label htmlFor={`FinalPrice-${index}`} className="product_add_label">Final Price</label>
+      <input
+        type="number"
+        name="FinalPrice"
+        id={`FinalPrice-${index}`}
+        placeholder="Final Price"
+        value={calculateFinalPrice(size.price, size.discountPercentage)}
+        onChange={(event) => handleSizeChange(index, event)}
+      />
+    </div>
+
+    <button
+      type="button"
+      className="w-25 btn btn-danger"
+      onClick={() => handleRemoveSize(index)}
+    >
+      Delete
+    </button>
+  </div>
+))}
+
           <button
             type="button"
             className="btn btn-primary"

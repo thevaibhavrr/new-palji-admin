@@ -179,15 +179,13 @@ const Orders = () => {
                   ))}
                 </div>
 
-
-
                 {/* Buttons */}
               </div>
               <div className="all_order_buttons_div all_order_buttons_div_for_shiprocket">
                 <Link target="_blank" to={`/admin/order/${order.id}`} >
                   <button className="all_order_order_view_button">View</button>
                 </Link>
-                <button className="all_order_order_update_button">Update</button>
+                <button className="all_order_order_update_button">cancel order</button>
               </div>
             </div>
           ))
