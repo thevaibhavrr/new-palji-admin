@@ -70,7 +70,7 @@ function Orderdetails() {
   const cancelOrder = async () => {
     try {
       setLoading(true);
-      await makeApi(`/api/cancel-order/${id}`, "POST");
+      await makeApi(`/api/shiprocket/cancel-order-by-id/${id}`, "POST");
       setOrder((prev) => ({ ...prev, status: "Canceled" }));
     } catch (error) {
       console.error("Error canceling order:", error);
