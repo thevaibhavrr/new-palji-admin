@@ -60,7 +60,7 @@ function Orderdetails() {
         return 'delivered';
       case 'canceled':
         return 'canceled';
-      case 'new':  // New status added
+      case 'new':  
         return 'new';
       default:
         return 'default';

@@ -24,10 +24,10 @@ function AdminaddProduct() {
   const [productType, setProductType] = useState("Domestic");
   const [uploadProgress, setUploadProgress] = useState({});
   const [thumbnailUploadProgress, setThumbnailUploadProgress] = useState(0);
-  const [productSizes, setProductSizes] = useState([{ size: 'null', sizetype: 'null', quantity: '',price: '',discountPercentage: 0,FinalPrice: '' }]);
+  const [productSizes, setProductSizes] = useState([{ size: 'null', sizetype: 'null', quantity: '', price: '', discountPercentage: 0, FinalPrice: '', height: '', width: '', length: '' }]);
   const [productNuturitions, setProductNuturitions] = useState([{ nutrition: '', value: '' }]);
   const [deliverables, setDeliverables] = useState([]);
-  const [subcategory, setSubcategory] = useState(""); 
+  const [subcategory, setSubcategory] = useState("");
 
 
 
@@ -63,23 +63,23 @@ function AdminaddProduct() {
   const handleNutritionChange = (index, event) => {
     const { name, value } = event.target;
     const updatedNutritions = [...productNuturitions];
-    
+
     // If you want to keep the original text value instead of parsing it
     updatedNutritions[index][name] = value; // Keep it as a string
-    
+
     // If you still want to parse it as float when it is a number
     // updatedNutritions[index][name] = isNaN(value) ? value : parseFloat(value);
-  
+
     setProductNuturitions(updatedNutritions);
   };
-  
+
 
   const calculateFinalPrice = (price, discountPercentage) => {
     return price - (price * (discountPercentage / 100));
   };
 
   const handleAddSize = () => {
-    setProductSizes([...productSizes, { size: '', sizetype: '', quantity: '',price: '',discountPercentage: 0,FinalPrice: '' }]);
+    setProductSizes([...productSizes, { size: '', sizetype: '', quantity: '', price: '', discountPercentage: 0, FinalPrice: '', height: '', width: '', length: '' }]);
   };
 
   const handleAddNutrition = () => {
@@ -98,19 +98,19 @@ function AdminaddProduct() {
     setProductNuturitions(values);
   };
 
-  const fetchCategory =  async function fetchCategories() {
-          try {
-            setLoading(true);
-            const response = await makeApi("/api/get-all-categories", "GET");
-              setCategories(response.data.categories);
-          } catch (error) {
-            console.log("Error fetching categories:", error);
-          } finally {
-            setLoading(false);
-          }
-        }
+  const fetchCategory = async function fetchCategories() {
+    try {
+      setLoading(true);
+      const response = await makeApi("/api/get-all-categories", "GET");
+      setCategories(response.data.categories);
+    } catch (error) {
+      console.log("Error fetching categories:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const requiredFields = [];
@@ -121,7 +121,7 @@ function AdminaddProduct() {
     if (!thumbnail) requiredFields.push("Thumbnail");
     if (!productType) requiredFields.push("Product Type");
     if (images.length === 0 || images.includes("")) requiredFields.push("Product Images");
-    
+
     if (requiredFields.length > 0) {
       const fieldNames = requiredFields.join(", ");
       toast.error(`Please fill all required fields: ${fieldNames}`);
@@ -161,28 +161,28 @@ function AdminaddProduct() {
       setProductSizes([{ size: '', sizetype: '', quantity: '' }]);
       setProductNuturitions([{ nutrition: '', value: '' }]);
       setDeliverables([]);
-      
+
     } catch (error) {
       console.error("Error adding product:", error);
     }
   };
-    // include
-    const handleAddDeliverable = () => {
-      setDeliverables([...deliverables, '']);
-    };
-  
-    const handleRemoveDeliverable = (index) => {
-      const newDeliverables = deliverables.filter((_, i) => i !== index);
-      setDeliverables(newDeliverables);
-    };
-  
-    const handleDeliverableChange = (e, index) => {
-      const newDeliverables = [...deliverables];
-      newDeliverables[index] = e.target.value;
-      setDeliverables(newDeliverables);
-    };
-  
-  
+  // include
+  const handleAddDeliverable = () => {
+    setDeliverables([...deliverables, '']);
+  };
+
+  const handleRemoveDeliverable = (index) => {
+    const newDeliverables = deliverables.filter((_, i) => i !== index);
+    setDeliverables(newDeliverables);
+  };
+
+  const handleDeliverableChange = (e, index) => {
+    const newDeliverables = [...deliverables];
+    newDeliverables[index] = e.target.value;
+    setDeliverables(newDeliverables);
+  };
+
+
 
   const handleImageChange = (index, value) => {
     const updatedImages = [...images];
@@ -256,23 +256,23 @@ function AdminaddProduct() {
         <div className="add_product_text">Add Product</div>
         <ToastContainer />
       </div>
-  
+
       <form onSubmit={handleSubmit} className="form-section">
-      <div className='form_group'>
-             <label className='form_label'>Includes:</label>
-             {deliverables.map((deliverable, index) => (
-              <div key={index} className='form_nested_group'>
-                <input type="text" value={deliverable} className='form_nested_input' placeholder="Include" onChange={(e) => handleDeliverableChange(e, index)} />
-                <button type="button" className='form_nested_button btn btn-danger ms-2' onClick={() => handleRemoveDeliverable(index)}>
-                  Remove
-                </button>
-              </div>
-            ))}
-            <button type="button" className="admin_add_product_button add_product_page_button m-3"
-              style={{ width: "200px" }} onClick={handleAddDeliverable}>
-              Add Include
-            </button>
-          </div>
+        <div className='form_group'>
+          <label className='form_label'>Includes:</label>
+          {deliverables.map((deliverable, index) => (
+            <div key={index} className='form_nested_group'>
+              <input type="text" value={deliverable} className='form_nested_input' placeholder="Include" onChange={(e) => handleDeliverableChange(e, index)} />
+              <button type="button" className='form_nested_button btn btn-danger ms-2' onClick={() => handleRemoveDeliverable(index)}>
+                Remove
+              </button>
+            </div>
+          ))}
+          <button type="button" className="admin_add_product_button add_product_page_button m-3"
+            style={{ width: "200px" }} onClick={handleAddDeliverable}>
+            Add Include
+          </button>
+        </div>
         {/* Name & Description */}
         <div className="section-wrapper">
           <h3>Product Details</h3>
@@ -291,131 +291,320 @@ function AdminaddProduct() {
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
-   
+
+      
+
         {/* Product Sizes */}
-        <div className="section-wrapper">
-          <h3>Product Sizes</h3>
-         {productSizes.map((size, index) => (
-  <div className="size-wrapper" key={index}>
-    <div className="input-group">
-      <label htmlFor={`size-${index}`} className="product_add_label">Size</label>
-      <input
-        type="text"
-        name="size"
-        id={`size-${index}`}
-        placeholder="Size"
-        value={size.size}
-        onChange={(event) => handleSizeChange(index, event)}
-      />
+{/* <div className="section-wrapper">
+  <h3>Product Sizes</h3>
+  {productSizes.map((size, index) => (
+    <div className="size-wrapper" key={index}>
+      <div className="input-group">
+        <label htmlFor={`size-${index}`} className="product_add_label">Size</label>
+        <input
+          type="text"
+          name="size"
+          id={`size-${index}`}
+          placeholder="Size"
+          value={size.size}
+          onChange={(event) => handleSizeChange(index, event)}
+        />
+      </div>
+
+      <div className="input-group">
+        <label htmlFor={`sizetype-${index}`} className="product_add_label">Size Type</label>
+        <input
+          type="text"
+          name="sizetype"
+          id={`sizetype-${index}`}
+          placeholder="Size Type"
+          value={size.sizetype}
+          onChange={(event) => handleSizeChange(index, event)}
+        />
+      </div>
+
+      <div className="input-group">
+        <label htmlFor={`quantity-${index}`} className="product_add_label">Stock</label>
+        <input
+          type="number"
+          name="quantity"
+          id={`quantity-${index}`}
+          placeholder="Stock"
+          value={size.quantity}
+          onChange={(event) => handleSizeChange(index, event)}
+        />
+      </div>
+
+      <div className="input-group">
+        <label htmlFor={`price-${index}`} className="product_add_label">Price</label>
+        <input
+          type="number"
+          name="price"
+          id={`price-${index}`}
+          placeholder="Price"
+          value={size.price}
+          onChange={(event) => handleSizeChange(index, event)}
+        />
+      </div>
+
+      <div className="input-group">
+        <label htmlFor={`discountPercentage-${index}`} className="product_add_label">Discount Percentage</label>
+        <input
+          type="number"
+          name="discountPercentage"
+          id={`discountPercentage-${index}`}
+          placeholder="Discount Percentage"
+          value={size.discountPercentage}
+          onChange={(event) => handleSizeChange(index, event)}
+        />
+      </div>
+
+      <div className="input-group">
+        <label htmlFor={`FinalPrice-${index}`} className="product_add_label">Final Price</label>
+        <input
+          type="number"
+          name="FinalPrice"
+          id={`FinalPrice-${index}`}
+          placeholder="Final Price"
+          value={calculateFinalPrice(size.price, size.discountPercentage)}
+          onChange={(event) => handleSizeChange(index, event)}
+        />
+      </div>
+      <br/>
+
+      <div className="input-group">
+        <label htmlFor={`height-${index}`} className="product_add_label">Height</label>
+        <input
+          type="text"
+          name="height"
+          id={`height-${index}`}
+          placeholder="Height"
+          value={size.height}
+          onChange={(event) => handleSizeChange(index, event)}
+        />
+      </div>
+
+      <div className="input-group">
+        <label htmlFor={`width-${index}`} className="product_add_label">Width</label>
+        <input
+          type="text"
+          name="width"
+          id={`width-${index}`}
+          placeholder="Width"
+          value={size.width}
+          onChange={(event) => handleSizeChange(index, event)}
+        />
+      </div>
+
+      <div className="input-group">
+        <label htmlFor={`length-${index}`} className="product_add_label">Length</label>
+        <input
+          type="text"
+          name="length"
+          id={`length-${index}`}
+          placeholder="Length"
+          value={size.length}
+          onChange={(event) => handleSizeChange(index, event)}
+        />
+      </div>
+
+      <button
+        type="button"
+        className="w-25 btn btn-danger"
+        onClick={() => handleRemoveSize(index)}
+      >
+        Delete
+      </button>
     </div>
+  ))}
 
-    <div className="input-group">
-      <label htmlFor={`sizetype-${index}`} className="product_add_label">Size Type</label>
-      <input
-        type="text"
-        name="sizetype"
-        id={`sizetype-${index}`}
-        placeholder="Size Type"
-        value={size.sizetype}
-        onChange={(event) => handleSizeChange(index, event)}
-      />
+  <button
+    type="button"
+    className="btn btn-primary"
+    onClick={handleAddSize}
+  >
+    Add More
+  </button>
+</div> */}
+{/* Product Sizes */}
+<div className="section-wrapper">
+  <h3>Product Sizes</h3>
+  {productSizes.map((size, index) => (
+    <div className="size-wrapper" key={index}>
+      {/* Existing Size Input */}
+      <div className="input-group">
+        <label htmlFor={`size-${index}`} className="product_add_label">Size</label>
+        <input
+          type="text"
+          name="size"
+          id={`size-${index}`}
+          placeholder="Size"
+          value={size.size}
+          onChange={(event) => handleSizeChange(index, event)}
+        />
+      </div>
+
+      {/* Updated Size Type Dropdown */}
+      <div className="input-group">
+        <label htmlFor={`sizetype-${index}`} className="product_add_label">Size Type</label>
+        <select
+          name="sizetype"
+          id={`sizetype-${index}`}
+          value={size.sizetype}
+          onChange={(event) => handleSizeChange(index, event)}
+        >
+          <option value="Kg" >null</option>
+          <option value="Kg">Kg</option>
+          <option value="Gram">Gram</option>
+          <option value="Litre">Litre</option>
+          <option value="ML">ML</option>
+          <option value="Pound">Pound</option>
+          <option value="Meter">Meter</option>
+        </select>
+      </div>
+
+      {/* Existing Quantity Input */}
+      <div className="input-group">
+        <label htmlFor={`quantity-${index}`} className="product_add_label">Stock</label>
+        <input
+          type="number"
+          name="quantity"
+          id={`quantity-${index}`}
+          placeholder="Stock"
+          value={size.quantity}
+          onChange={(event) => handleSizeChange(index, event)}
+        />
+      </div>
+
+      {/* Existing Price Input */}
+      <div className="input-group">
+        <label htmlFor={`price-${index}`} className="product_add_label">Price</label>
+        <input
+          type="number"
+          name="price"
+          id={`price-${index}`}
+          placeholder="Price"
+          value={size.price}
+          onChange={(event) => handleSizeChange(index, event)}
+        />
+      </div>
+
+      {/* Existing Discount Percentage Input */}
+      <div className="input-group">
+        <label htmlFor={`discountPercentage-${index}`} className="product_add_label">Discount Percentage</label>
+        <input
+          type="number"
+          name="discountPercentage"
+          id={`discountPercentage-${index}`}
+          placeholder="Discount Percentage"
+          value={size.discountPercentage}
+          onChange={(event) => handleSizeChange(index, event)}
+        />
+      </div>
+
+      {/* Final Price Input */}
+      <div className="input-group">
+        <label htmlFor={`FinalPrice-${index}`} className="product_add_label">Final Price</label>
+        <input
+          type="number"
+          name="FinalPrice"
+          id={`FinalPrice-${index}`}
+          placeholder="Final Price"
+          value={calculateFinalPrice(size.price, size.discountPercentage)}
+          onChange={(event) => handleSizeChange(index, event)}
+        />
+      </div>
+      <br/>
+
+      {/* Height Input */}
+      <div className="input-group">
+        <label htmlFor={`height-${index}`} className="product_add_label">Height</label>
+        <input
+          type="text"
+          name="height"
+          id={`height-${index}`}
+          placeholder="Height"
+          value={size.height}
+          onChange={(event) => handleSizeChange(index, event)}
+        />
+      </div>
+
+      {/* Width Input */}
+      <div className="input-group">
+        <label htmlFor={`width-${index}`} className="product_add_label">Width</label>
+        <input
+          type="text"
+          name="width"
+          id={`width-${index}`}
+          placeholder="Width"
+          value={size.width}
+          onChange={(event) => handleSizeChange(index, event)}
+        />
+      </div>
+
+      {/* Length Input */}
+      <div className="input-group">
+        <label htmlFor={`length-${index}`} className="product_add_label">Length</label>
+        <input
+          type="text"
+          name="length"
+          id={`length-${index}`}
+          placeholder="Length"
+          value={size.length}
+          onChange={(event) => handleSizeChange(index, event)}
+        />
+      </div>
+
+      {/* Remove Size Button */}
+      <button
+        type="button"
+        className="w-25  btn btn-danger"
+        onClick={() => handleRemoveSize(index)}
+      >
+        Delete
+      </button>
     </div>
+  ))}
 
-    <div className="input-group">
-      <label htmlFor={`quantity-${index}`} className="product_add_label">Stock</label>
-      <input
-        type="number"
-        name="quantity"
-        id={`quantity-${index}`}
-        placeholder="Stock"
-        value={size.quantity}
-        onChange={(event) => handleSizeChange(index, event)}
-      />
-    </div>
+  <button
+    type="button"
+    className="btn btn-primary"
+    onClick={handleAddSize}
+  >
+    Add More
+  </button>
+</div>
 
-    <div className="input-group">
-      <label htmlFor={`price-${index}`} className="product_add_label">Price</label>
-      <input
-        type="number"
-        name="price"
-        id={`price-${index}`}
-        placeholder="Price"
-        value={size.price}
-        onChange={(event) => handleSizeChange(index, event)}
-      />
-    </div>
 
-    <div className="input-group">
-      <label htmlFor={`discountPercentage-${index}`} className="product_add_label">Discount Percentage</label>
-      <input
-        type="number"
-        name="discountPercentage"
-        id={`discountPercentage-${index}`}
-        placeholder="Discount Percentage"
-        value={size.discountPercentage}
-        onChange={(event) => handleSizeChange(index, event)}
-      />
-    </div>
-
-    <div className="input-group">
-      <label htmlFor={`FinalPrice-${index}`} className="product_add_label">Final Price</label>
-      <input
-        type="number"
-        name="FinalPrice"
-        id={`FinalPrice-${index}`}
-        placeholder="Final Price"
-        value={calculateFinalPrice(size.price, size.discountPercentage)}
-        onChange={(event) => handleSizeChange(index, event)}
-      />
-    </div>
-
-    <button
-      type="button"
-      className="w-25 btn btn-danger"
-      onClick={() => handleRemoveSize(index)}
-    >
-      Delete
-    </button>
-  </div>
-))}
-
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={handleAddSize}
-          >
-            Add More
-          </button>
-        </div>
 
         {/* Product Nutrition */}
         <div className="section-wrapper">
           <h3>Nutrition Facts</h3>
-         {productNuturitions.map((nutrition, index) => (
-          <div className="size-wrapper" key={index}>
-            <input
-              type="text"
-              name="name"
-              placeholder="Name"
-              value={nutrition.name}
-              onChange={(event) => handleNutritionChange(index, event)}
-            />
-            <input
-              type="text"
-              name="value"
-              placeholder="Value"
-              value={nutrition.value}
-              onChange={(event) => handleNutritionChange(index, event)}
-            />
-            <button
-              type="button"
-              className="w-25 btn btn-danger"
-              onClick={() => handleRemoveNutrition(index)}
-            >
-              Delete
-            </button>
-          </div>
-         ))}
+          {productNuturitions.map((nutrition, index) => (
+            <div className="size-wrapper" key={index}>
+              <input
+                type="text"
+                name="name"
+                placeholder="Name"
+                value={nutrition.name}
+                onChange={(event) => handleNutritionChange(index, event)}
+              />
+              <input
+                type="text"
+                name="value"
+                placeholder="Value"
+                value={nutrition.value}
+                onChange={(event) => handleNutritionChange(index, event)}
+              />
+              <button
+                type="button"
+                className="w-25 btn btn-danger"
+                onClick={() => handleRemoveNutrition(index)}
+              >
+                Delete
+              </button>
+            </div>
+          ))}
           <button
             type="button"
             className="btn btn-primary"
@@ -424,7 +613,7 @@ function AdminaddProduct() {
             Add More
           </button>
         </div>
-  
+
         {/* Images & Thumbnail */}
         <div className="section-wrapper">
           <h3>Product Images</h3>
@@ -460,7 +649,7 @@ function AdminaddProduct() {
             Add More
           </button>
         </div>
-  
+
         <div className="section-wrapper">
           <h3>Product Thumbnail</h3>
           <div className="file-upload-form">
@@ -498,11 +687,11 @@ function AdminaddProduct() {
             )}
           </div>
         </div>
-  
+
         {/* Additional Details */}
         <div className="section-wrapper">
           <h3>Additional Details</h3>
-         
+
           <select
             className="add_product_input_filed"
             value={category}
@@ -526,13 +715,13 @@ function AdminaddProduct() {
                 <option key={sub._id} value={sub._id}>
                   {sub.name}
                 </option>
-            ))}
-          </select>
-        )}
+              ))}
+            </select>
+          )}
 
 
         </div>
-  
+
         {/* Submit Button */}
         <div className="submit-section">
           <button type="submit" className="admin_add_product_button">
@@ -542,7 +731,7 @@ function AdminaddProduct() {
       </form>
     </div>
   );
-  
+
 }
 
 export default AdminaddProduct;

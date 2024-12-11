@@ -36,6 +36,9 @@ function UpdateProduct() {
     productType: "",
     Tax: "",
     PriceAfterDiscount: "",
+    height: "",
+    width: "",
+    length: "",
   });
   const fetchProduct = async () => {
     try {
@@ -44,7 +47,7 @@ function UpdateProduct() {
       console.log(response.data.product)
 
       const productData = await response?.data?.product;
-      await  setProduct(productData);
+      await setProduct(productData);
       await setSizes(response?.data?.sizes);
       await setNutritions(response?.data?.productNuturitions || []);
       await setIncludes(response?.data?.include || []);
@@ -303,11 +306,11 @@ function UpdateProduct() {
                 <div>
                   {formData.category && (
                     <select
-                    name="subcategory"
+                      name="subcategory"
                       className="add_product_input_filed"
                       value={formData.subcategory}
                       // onChange={(e) => setSubcategory(e.target.value)}
-                    onChange={handleChange}
+                      onChange={handleChange}
 
                     >
                       <option value="">Select Subcategory</option>
@@ -328,55 +331,99 @@ function UpdateProduct() {
                 <div className="size-section">
                   {sizes.map((size, index) => (
                     <div key={index} className="size-row">
-                      <input
-                        type="text"
-                        name={`size_${index}`}
-                        value={size.size}
-                        placeholder="Size"
-                        onChange={(e) => handleSizeChange(e, index, "size")}
-                      />
-                      <input
-                        type="text"
-                        name={`sizetype_${index}`}
-                        value={size.sizetype}
-                        placeholder="Size Type"
-                        onChange={(e) => handleSizeChange(e, index, "sizetype")}
-                      />
-                      <input
-                        type="number"
-                        name={`quantity_${index}`}
-                        value={size.quantity}
-                        placeholder="Quantity"
-                        onChange={(e) => handleSizeChange(e, index, "quantity")}
-                      />
-                      <input
-                        type="number"
-                        name={`price_${index}`}
-                        value={size.price}
-                        placeholder="Price"
-                        onChange={(e) => handleSizeChange(e, index, "price")}
-                      />
-                      <input
-                        type="number"
-                        name={`discountPercentage_${index}`}
-                        value={size.discountPercentage}
-                        placeholder="Discount Percentage"
-                        onChange={(e) =>
-                          handleSizeChange(e, index, "discountPercentage")
-                        }
-                      />
-                      <input
-                        type="number"
-                        name={`FinalPrice_${index}`}
-                        value={calculateFinalPrice(size.price, size.discountPercentage)}
-                        placeholder="Final Price"
-                        onChange={(e) =>
-                          handleSizeChange(e, index, "FinalPrice")
-                        }
-                      />
+
+                      <div className="input-group">
+                        <label htmlFor={`size_${index}`} className="product_add_label">Size</label>
+                        <input
+                          type="text"
+                          name={`size_${index}`}
+                          value={size.size}
+                          placeholder="Size"
+                          onChange={(e) => handleSizeChange(e, index, "size")}
+                        />
+                      </div>
+
+                      {/* <div className="input-group">
+                        <label htmlFor={`sizetype_${index}`} className="product_add_label">Size Type</label>
+                        <input
+                          type="text"
+                          name={`sizetype_${index}`}
+                          value={size.sizetype}
+                          placeholder="Size Type"
+                          onChange={(e) => handleSizeChange(e, index, "sizetype")}
+                        />
+                      </div> */}
+                    <div className="input-group">
+          <label htmlFor={`sizetype-${index}`} className="product_add_label">Size Type</label>
+          <select
+            name={`sizetype_${index}`}
+            id={`sizetype-${index}`}
+            value={size.sizetype}
+            onChange={(e) => handleSizeChange(e, index, "sizetype")}
+          >
+            <option value="null">null</option>
+            <option value="Kg">Kg</option>
+            <option value="Gram">Gram</option>
+            <option value="Litre">Litre</option>
+            <option value="ML">ML</option>
+            <option value="Pound">Pound</option>
+            <option value="Meter">Meter</option>
+            <option value={size.sizetype}>{size.sizetype || "Select Size Type"}</option>
+          </select>
+        </div>
+
+                      <div className="input-group">
+                        <label htmlFor={`quantity_${index}`} className="product_add_label">Quantity</label>
+                        <input
+                          type="text"
+                          name={`quantity_${index}`}
+                          value={size.quantity}
+                          placeholder="Quantity"
+                          onChange={(e) => handleSizeChange(e, index, "quantity")}
+                        />
+                      </div>
+
+                      <div className="input-group">
+                        <label htmlFor={`price_${index}`} className="product_add_label">Price</label>
+                        <input
+                          type="text"
+                          name={`price_${index}`}
+                          value={size.price}
+                          placeholder="Price"
+                          onChange={(e) => handleSizeChange(e, index, "price")}
+                        />
+                      </div>
+
+                      <div className="input-group">
+                        <label htmlFor={`discountPercentage_${index}`} className="product_add_label">Discount Percentage</label>
+                        <input
+                          type="text"
+                          name={`discountPercentage_${index}`}
+                          value={size.discountPercentage}
+                          placeholder="Discount Percentage"
+                          onChange={(e) =>
+                            handleSizeChange(e, index, "discountPercentage")
+                          }
+                        />
+                      </div>
+
+                      <div className="input-group">
+                        <label htmlFor={`FinalPrice_${index}`} className="product_add_label">Final Price</label>
+                        <input
+                          type="text"
+                          name={`FinalPrice_${index}`}
+                          value={calculateFinalPrice(size.price, size.discountPercentage)}
+                          placeholder="Final Price"
+                          onChange={(e) =>
+                            handleSizeChange(e, index, "FinalPrice")
+                          }
+                        />
+                      </div>
+
                       {size._id && (
                         <button
                           type="button"
+                          className="btn btn-danger"
                           onClick={() =>
                             setShowConfirm({ show: true, sizeId: size._id })
                           }
@@ -395,6 +442,55 @@ function UpdateProduct() {
                   </button>
                 </div>
               </div>
+
+              {/* dimension section */}
+              <div className="form-section">
+                <h3>Dimension</h3>
+                <div className="size-section">
+                  {sizes.map((size, index) => (
+                    <div key={index} className="size-row">
+                      <div className="input-group">
+                        <label htmlFor={`height-${index}`} className="product_add_label">Height</label>
+                        <input
+                          type="text"
+                          name={`size_${index}`}
+                          value={size.height}
+                          className="no-scroll"
+                          placeholder="Size"
+                          onChange={(e) => handleSizeChange(e, index, "height")}
+                        />
+                      </div>
+
+                      <div className="input-group">
+                        <label htmlFor={`width-${index}`} className="product_add_label">Width</label>
+                        <input
+                          type="text"
+                          name={`sizetype_${index}`}
+                          value={size.width}
+                          className="no-scroll"
+                          placeholder="Width"
+                          onChange={(e) => handleSizeChange(e, index, "width")}
+                        />
+                      </div>
+
+                      <div className="input-group">
+                        <label htmlFor={`length-${index}`} className="product_add_label">Length</label>
+                        <input
+                          type="text"
+                          name={`quantity_${index}`}
+                          value={size.length}
+                          className="no-scroll"
+                          placeholder="Length"
+                          onChange={(e) => handleSizeChange(e, index, "length")}
+                        />
+                      </div>
+                    </div>
+                  ))}
+
+
+                </div>
+              </div>
+
 
               {/* Nutrition Section */}
               <div className="form-section">
@@ -422,6 +518,8 @@ function UpdateProduct() {
                     {nutrition._id && (
                       <button
                         type="button"
+                        className="btn btn-danger"
+
                         onClick={() => handleDeleteNutrition(nutrition._id)}
                       >
                         Delete Nutrition
