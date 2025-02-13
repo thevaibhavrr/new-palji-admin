@@ -9,6 +9,7 @@ import Orders from './AdminComponents/shiprocket/Allshiporders';
 import OrderDetails from './AdminComponents/shiprocket/shiporderdetails';
 import Alluser from './AdminComponents/user/alluser';
 import Userdetails from './AdminComponents/user/userdetails';
+import VideoUpload from './Test';
 
 function App() {
   const history = useNavigate();
@@ -24,7 +25,8 @@ function App() {
   return (
     <div>
        <Routes>
-        <Route path="/" element={<LoginForm />} />
+        {/* <Route path="/" element={<LoginForm />} /> */}
+        <Route path="/" element={<VideoUpload />} />
         <Route path="/Forgot-Password" element={<ForgotPasswordForm />} />
         <Route path="/otp-verified" element={<OtpVerifiedForm />} />
         <Route path="/test" element={<Alluser />} />

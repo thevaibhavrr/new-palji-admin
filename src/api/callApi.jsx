@@ -22,7 +22,10 @@ export const makeApi = async (
       method,
       // url: `https://pajiweb.onrender.com${endpoint}`,
       // url:"http://localhost:7000"+endpoint,
-      url: `https://new-palji-backend-1.onrender.com${endpoint}`,
+      // url: `https://new-palji-backend-1.onrender.com${endpoint}`,
+      
+			url: `https://palji.ritaz.in${endpoint}`,
+
       headers,
       data
     };
